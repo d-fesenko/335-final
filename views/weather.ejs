@@ -6,16 +6,14 @@
     <title>Weather Result</title>
 </head>
 <body>
-     <form action="/favorites" method="POST">
+    <form action="/favorites/<%= weather.city %>" method="POST">
     <h1>Weather in <%= weather.city %></h1>
     <p> <%= weather.desc %> </p>
     <p>Temperature: <%= weather.temperature %>°F</p>
     <p>Humidity: <%= weather.humidity %>%</p>
-    <p>Wind Speed: <%= weather.wind %> mph</p>
+    <p>Wind Speed: <%= weather.wind %> MPH</p>
 
-    <!-- <form action="/favorites" method="POST"> -->
-        <!-- <input type="hidden" name="city" value="<%= weather.city %>"> -->
-        <button type="submit">Add to Favorites</button>
+    <button type="submit">Add to Favorites</button>
     </form>
     <a href="/">Home</a>
 </body>

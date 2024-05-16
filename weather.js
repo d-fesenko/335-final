@@ -1,12 +1,15 @@
 const express = require("express");
 require("dotenv").config();
 const fetch = require("node-fetch");
+const path = require("path");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const port = parseInt(process.argv[2]);
 
-const app = express();
+const app = express()
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
 app.set("view engine", "ejs");
+app.set("views", path.resolve(__dirname, "views"));
 
 const uri = process.env.URI;
 const client = new MongoClient(uri, {
@@ -30,21 +33,32 @@ app.post("/weather", async (req, res) => {
     const desc = weatherData.weather[0].description;
     const descU = desc.split(" ").map(i => i[0].toUpperCase() + i.slice(1)).join(" ");
 
-    const weather = {
+    let weather;
+    if ((city.toLowerCase() === "nelson")) {
+      weather = {
+        city: "Nelson Land Amigo",
+        temperature: 69,
+        humidity: 69,
+        wind: 69,
+        desc: "Very Nice Amigo",
+      };
+    }
+    else {
+      weather = {
       city: city,
       temperature: temp,
       humidity: humidity,
       wind: speed,
       desc: descU,
     };
-
+  }
     await client.db("WeatherDB").collection("WeatherData").insertOne(weather);
 
     res.render("weather", { weather });
 }); 
 
 app.post("/favorites", async (req, res) => {
-    const city = req.body.city;
+    const city = req.params.city;
     await client.db("WeatherDB").collection("Favorites").insertOne({city});
     res.redirect("/favorites");
 })
