@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Favorite Cities</title>
+  </head>
+  <body>
+    <h1>Favorite Cities</h1>
+    <ul>
+      <% cities.forEach(i => { %>
+      <li><%= i.city %></li>
+
+      <% }); %>
+    </ul>
+    <form action="/clear" method="POST">
+      <button type="submit">Clear</button>
+    </form>
+    <a href="/"> Back to Home</a>
+  </body>
+</html>
