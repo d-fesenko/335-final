@@ -6,18 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/x-icon" sizes="32x32" href="public/favicon-32x32.png">
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="favicon-32x32.png">
 </head>
 
 <body>
-    <header class="header">
-    <nav class="nav">
+    <div class="nav">
         <a href="/">Home</a>
         <a href="/favorites">Favorites</a>
-    </nav>
-    </header>
+    </div>
     <div class="search">
-        <form action="/weather" method="post">
+        <form action="/" method="post">
             <input type="text" name="city" id="city" placeholder="Search City">
             <button type="submit">Submit</button>
         </form>

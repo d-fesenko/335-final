@@ -26,7 +26,7 @@ const apiUrl = `https://api.openweathermap.org/data/2.5/weather?units=imperial&q
 client.connect();
 
 app.get("/", (req, res) => res.render("index"));
-app.post("/weather", async (req, res) => {
+app.post("/", async (req, res) => {
   const city = req.body.city;
   const response = await fetch(apiUrl + city.toLowerCase() + `&appid=${apiKey}`);
   const weatherData = await response.json();

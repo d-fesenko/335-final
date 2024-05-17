@@ -1,5 +1,6 @@
 body{
     background-image: url("weather.jpg");
+    margin:0;
 }
 
 .search{
@@ -79,23 +80,104 @@ body{
     align-items: left;
 }
 
-.header{
-    position:fixed;
-    top:0; left:0;
-    width:100%;
-    padding: 20px 100px;
-    background: rgba(0, 0, 0, 0.726);
-    display:flex;
-    justify-content: space-between;
-    align-items: right;
-    z-index: 100;
+.nav {
+    overflow: hidden;
+    background: transparent;
+    backdrop-filter: blur(30px);
+    background-color: rgba(0, 0, 0, 0.60);
+    padding: 20px;
 }
 
-.nav a{
-    color:white;
+.nav a {
+    float: left;
+    color: white;
+    text-align: center;
+    padding: 15px 20px;
     text-decoration: none;
+    font-size: 17px;
 }
 
-.nav-search{
+.nav a:hover {
+    background-color: #0D9DE3;
+    color: black;
+    border-radius: 5px;
+}
+
+svg {
+    width: 16px;
+    margin-right: 10px;
+
+    & path {
+        fill: lavender;
+    }
+}
+
+.search-bar {
+    border: 2px solid white;
+    border-radius: 50px;
+    width: 300px;
+    display: flex;
+    background-color: transparent;
+    float: right;
     padding: 10px;
+    justify-content: space-between;
+    align-items: center;
+
+    & div:not(.go) {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+
+        & svg {
+            margin-right: 10px;
+        }
+
+    }
+
+    & input {
+        background-color: transparent;
+        box-shadow: none;
+        border: none;
+        color: white;
+
+        &::placeholder {
+            color: lavender;
+            background-color: transparent;
+        }
+
+        &:focus-visible {
+            border: none;
+            box-shadow: none;
+            background-color: transparent;
+            outline: none;
+        }
+    }
+}
+
+
+.go {
+    border-radius: 50px;
+    background-color: transparent;
+    float: right;
+    padding: 5px;
+    outline: none;
+    display: flex;
+    box-shadow: none;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+
+    & svg {
+        margin-right: 0;
+        margin: auto;
+
+        & path {
+            fill: white;
+        }
+    }
+
+    &:hover {
+        background-color: lightslategrey;
+        transition: all 0.2s;
+    }
 }
