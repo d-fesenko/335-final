@@ -1,12 +1,18 @@
 const express = require("express");
 require("dotenv").config();
 const fetch = require("node-fetch");
+const path = require("path");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const port = parseInt(process.argv[2]);
 
-const app = express();
+const app = express()
 app.use(express.urlencoded({ extended: true }));
+app.set("views", path.resolve(__dirname, "ejs_files"));
 app.set("view engine", "ejs");
+// app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+// app.set("view engine", "ejs");
+// app.set("views", path.resolve(__dirname, "views"));
 
 const uri = process.env.URI;
 const client = new MongoClient(uri, {
@@ -14,37 +20,60 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
+
+const apiKey = "298d89cce8ba1ad43545c91660409b12";
+const apiUrl = `https://api.openweathermap.org/data/2.5/weather?units=imperial&q=`;
 client.connect();
+
 app.get("/", (req, res) => res.render("index"));
 app.post("/weather", async (req, res) => {
-  const city = req.body.city;
-  const apiKey = "298d89cce8ba1ad43545c91660409b12"; 
-  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?units=imperial&q=`;
-
-  try {
+    const city = req.body.city;
     const response = await fetch(apiUrl + city.toLowerCase() + `&appid=${apiKey}`);
-    if (!response.ok) {
-      throw new Error("Failed to fetch weather data");
-    }
     const weatherData = await response.json();
+    const temp = weatherData.main.temp;
+    const humidity = weatherData.main.humidity;
+    const { speed }= weatherData.wind;
+    const desc = weatherData.weather[0].description;
+    const descU = desc.split(" ").map(i => i[0].toUpperCase() + i.slice(1)).join(" ");
 
-    const { temp, humidity } = weatherData.main;
-    const { speed } = weatherData.wind;
-
-    const weather = {
+    let weather;
+    if ((city.toLowerCase() === "nelson")) {
+      weather = {
+        city: "Nelson Land Amigo",
+        temperature: 69,
+        humidity: 69,
+        wind: 69,
+        desc: "Very Nice Amigo",
+      };
+    }
+    else {
+      weather = {
       city: city,
       temperature: temp,
       humidity: humidity,
       wind: speed,
+      desc: descU,
     };
-
+  }
     await client.db("WeatherDB").collection("WeatherData").insertOne(weather);
 
     res.render("weather", { weather });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Error fetching weather data");
-  }
+}); 
+
+app.post("/favorites/:city", async (req, res) => {
+    const city = req.params.city;
+    await client.db("WeatherDB").collection("Favorites").insertOne({city});
+    res.redirect("/favorites");
+})
+app.get("/favorites", async (req, res) => {
+    const cities = await client.db("WeatherDB").collection("Favorites").find().toArray();
+    res.render("favorites", { cities });
+});
+
+app.post("/clear", async (req, res) => {
+    await client.db("WeatherDB").collection("Favorites").deleteMany({});
+    res.redirect("/favorites");
+  
 });
 
 app.listen(port, () => {
