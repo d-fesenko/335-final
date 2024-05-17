@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Current Weather</title>
-    <link rel="stylesheet" href="public/style.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" sizes="32x32" href="public/favicon-32x32.png">
 </head>
 
 <body>
     <nav class="header">
-        <a href="index.html">Home</a>
-        <a href="favorites.html">Favorites</a>
+       <button><a href="/">Home</a></button>
+        <button> <a href="/favorites">Favorites</a></button>
         <div class ="nav-search">
             <form action="/weather" method="post" class ="nav-search">
                 <input type="text" placeholder="Search City">
@@ -22,13 +22,17 @@
     </nav>
     <div class="display">
         <div>
-            <h2>City Name: <%- city%></h2>
-            <h3>Temperature: <%- temp%></h3>
-            <h3>Humidity: <%- humidity%></h3>
-            <h3>Wind Speed: <%- wind%></h3>
+            <form action="/favorites/<%= weather.city %>" method="POST">
+            <h1>Weather in <%= weather.city %></h1>
+            <p> <%= weather.desc %> </p>
+            <p>Temperature: <%= weather.temperature %>°F</p>
+            <p>Humidity: <%= weather.humidity %>%</p>
+            <p>Wind Speed: <%= weather.wind %> MPH</p>
+            <button type="submit">Add to Favorites</button>
+    </form>
         </div>
     </div>
-    <a href="/" class="home">Home</a>
+    <!-- <a href="/" class="home">Home</a> -->
 </body>
 
 </html>

@@ -7,9 +7,12 @@ const port = parseInt(process.argv[2]);
 
 const app = express()
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.set("views", path.resolve(__dirname, "ejs_files"));
 app.set("view engine", "ejs");
-app.set("views", path.resolve(__dirname, "views"));
+// app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+// app.set("view engine", "ejs");
+// app.set("views", path.resolve(__dirname, "views"));
 
 const uri = process.env.URI;
 const client = new MongoClient(uri, {
@@ -57,7 +60,7 @@ app.post("/weather", async (req, res) => {
     res.render("weather", { weather });
 }); 
 
-app.post("/favorites", async (req, res) => {
+app.post("/favorites/:city", async (req, res) => {
     const city = req.params.city;
     await client.db("WeatherDB").collection("Favorites").insertOne({city});
     res.redirect("/favorites");
