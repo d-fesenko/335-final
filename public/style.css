@@ -12,6 +12,37 @@ body{
     text-align: center;
 }
 
+.favorites{
+    width: 100%;
+    max-width: fit-content;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 100px auto 0;
+    border-radius: 20px;
+    padding: 40px 35px;
+    text-align: center;
+}
+
+.favorites a{
+    color: white;
+}
+
+.favorites h1{
+    color: white;
+}
+
+.favorites li{
+    color: white
+}
+
+.favorites button {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #627e75;
+    color: white;
+}
+
 .search input{
     width: 500px;
     padding: 10px;
