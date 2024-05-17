@@ -42,63 +42,30 @@ app.post("/weather", async (req, res) => {
   const desc = weatherData.weather[0].description;
   const descU = desc.split(" ").map(i => i[0].toUpperCase() + i.slice(1)).join(" ");
 
-  let weather = {
-      city: city,
-      temperature: temp,
-      humidity: humidity,
-      wind: speed,
-      desc: descU,
-  };
 
+ let weather;
+
+ if (city.toLowerCase() === "nelson") {
+   weather = {
+     city: "Nelson Land Amigo",
+     temperature: 69,
+     humidity: 69,
+     wind: 69,
+     desc: "Very Nice Amigo",
+   };
+ } else {
+   weather = {
+     city: city,
+     temperature: temp,
+     humidity: humidity,
+     wind: speed,
+     desc: descU,
+   };
+ }
   await client.db("WeatherDB").collection("WeatherData").insertOne(weather);
   res.render("weather", { weather });
 });
 
-
-app.get("/weather", async (req, res) => {
-  let city
-  if (req.query.city == "Nelson Land Amigo") {
-    city = "nelson"
-  }
-  else {
-    city = req.query.city;
-  }
-  
-  if (!city) {
-      return res.render("index");
-  }
-
-  const response = await fetch(apiUrl + city.toLowerCase() + `&appid=${apiKey}`);
-  const weatherData = await response.json();
-  const temp = weatherData.main.temp;
-  const humidity = weatherData.main.humidity;
-  const { speed } = weatherData.wind;
-  const desc = weatherData.weather[0].description;
-  const descU = desc.split(" ").map(i => i[0].toUpperCase() + i.slice(1)).join(" ");
-
-  let weather
-  
-  if ((city.toLowerCase() === "nelson")) {
-    weather = {
-      city: "Nelson Land Amigo",
-      temperature: 69,
-      humidity: 69,
-      wind: 69,
-      desc: "Very Nice Amigo",
-    };
-  }
-  else {
-    weather = {
-    city: city,
-    temperature: temp,
-    humidity: humidity,
-    wind: speed,
-    desc: descU,
-  };
-}
-
-  res.render("weather", { weather });
-});
 
 
 app.post("/favorites/:city", async (req, res) => {
